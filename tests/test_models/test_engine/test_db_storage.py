@@ -66,7 +66,33 @@ test_db_storage.py'])
                              "{:s} method needs a docstring".format(func[0]))
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
+	
+    def test_get_method(self):
+   	 """Test the get method."""
+	new_state = State(name="TestState")
+    	models.storage.new(new_state)
+    	models.storage.save()
+    	state_id = new_state.id
+	self.assertIs(models.storage.get(State, state_id),
+		new_state, "get method did not return the expected object.")
+	self.assertIsNone(models.storage.get(State, "fake-id"),
+		"get method should return None for non-existing id.")
+	self.assertIsNone(models.storage.get("FakeClass", state_id),
+		"get method should return None for non-existing class.")
 
+    def test_count_method(self):
+    	"""Test the count method."""
+    	initial_count_all = models.storage.count()
+    	initial_count_state = models.storage.count(State)
+	new_state = State(name="TestState")
+    	models.storage.new(new_state)
+    	models.storage.save()
+	self.assertEqual(models.storage.count(), initial_count_all + 1,
+		"count method did not increase by 1 after adding an object.")
+	self.assertEqual(models.storage.count(State), initial_count_state + 1,
+		"count method did not increase by 1 for State objects after adding a State.")
+	self.assertTrue(models.storage.count() >= 1,
+		"count method should return at least one object.")
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
