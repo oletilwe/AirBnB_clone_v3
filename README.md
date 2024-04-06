@@ -1,4 +1,4 @@
-author: Oletilwe Lephalala,  Alae-Eddine Sahbou
+author: Oletilwe Lephalala
 0. Restart from scratch!
 1. Never fail!
 2. Improve storage
